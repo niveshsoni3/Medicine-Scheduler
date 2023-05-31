@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Schedule Page</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+
+    h1, h2 {
+      color: #333;
+    }
+
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .schedule-table th, .schedule-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .schedule-table th {
+      background-color: #f0f0f0;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<h1>Welcome, <span th:text="${user?.username}"></span>!</h1>
+<p>Email: <span th:text="${user?.email}"></span></p>
+
+<h2>Schedule:</h2>
+<table class="schedule-table">
+  <tr>
+    <th>Medicine</th>
+    <th>Timing</th>
+  </tr>
+  <tr th:each="schedule : ${scheduleList}">
+    <td th:text="${schedule.medicineName}"></td>
+    <td th:text="${schedule.timing}"></td>
+  </tr>
+</table>
+
+<form action="/addMedicine" method="post">
+  <input type="hidden" name="userId" th:value="${user?.id}" />
+  <label for="medicineName">Medicine Name:</label>
+  <input type="text" id="medicineName" name="medicineName" required /><br>
+  <label for="timing">Timing:</label>
+  <input type="text" id="timing" name="timing" required /><br>
+  <button type="submit">Add Medicine</button>
+</form>
+
+<script>
+  function addMedicine() {
+    var medicineName = prompt("Enter medicine name:");
+    var timing = prompt("Enter timing:");
+
+    var table = document.querySelector(".schedule-table");
+    var row = table.insertRow(-1);
+
+    var medicineCell = row.insertCell(0);
+    var timingCell = row.insertCell(1);
+
+    // Set the values of the new cells
+    medicineCell.textContent = medicineName;
+    timingCell.textContent = timing;
+  }
+</script>
+</body>
+</html>
